@@ -1,9 +1,15 @@
 from itertools import product
 from numpy import random
 
-"""The game is more or less complete. The only thing is that cards get chosen randomly from the deck each room. Therefore
-cards from when you fled a room get shoveled into the deck randomly"""
+"""The game is more or less complete. The only thing that should be adjusted: cards get chosen randomly from the deck each room. Therefore
+cards from when you fled a room get shoveled into the deck randomly: 
+1. create shoveled deck
+2. adjust form_room & refill room to use first cards in deck
+3. As of now flee adds cards to room in opposite order. Leave or change?"""
 
+
+
+#-----------------------SETUP--------------------------
 
 #creating the deck
 black_suits = ['♣', '♠']
@@ -15,9 +21,6 @@ deck = []
 deck.extend(list(product(ranks_black, black_suits)))
 deck.extend(list(product(ranks_red, red_suits)))
 
-"I actually need to create a shoveled and ordered deck, since the order matters"
-"because you can flee a room, and those cards need to be at the end"
-
 #create an empty weapon slot
 weapon = []
 weapon_cap = float('inf')
@@ -26,7 +29,8 @@ weapon_cap = float('inf')
 dict_rank_to_value = {'2':2, '3':3, '4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'10':10,'J':11,'Q':12,'K':13,'A':14}
 
 
-"""the following mechanic will actually not work, I need to take the first 4 cards"""
+
+#-----------------------MECHANICS--------------------------
 
 def form_room():
     global deck, room
@@ -146,6 +150,10 @@ def flee_or_play():
     else:
         while room:
             deck.append(room.pop())
+
+
+
+#-----------------------GAMING PROCESS--------------------------
 
 #starting the game
 print("starting game")
