@@ -18,9 +18,6 @@ deck.extend(list(product(ranks_red, red_suits)))
 "I actually need to create a shoveled and ordered deck, since the order matters"
 "because you can flee a room, and those cards need to be at the end"
 
-# create an empty discard staple
-discard = []
-
 #create an empty weapon slot
 weapon = []
 weapon_cap = float('inf')
@@ -43,7 +40,7 @@ def form_room():
     print(room)
 
 def choose_card():
-    global discard, room, played_card
+    global room, played_card
     #check for correct input
     choice = None
     while choice is None:
@@ -57,7 +54,7 @@ def choose_card():
         except ValueError:
             print(f"Please enter a number from 1 - {len(room)}.")
     played_card = room[choice - 1]
-    discard.append(room.pop(choice - 1))
+    room.pop(choice - 1)
     print()
     print(f'You played the card {played_card}')
     
