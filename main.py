@@ -40,7 +40,7 @@ def form_room():
         rndm_nr = random.randint(len(deck)-1)
         room.append(deck.pop(rndm_nr))
     print()
-    print ('your cards are:')
+    print("As you enter the dungeon, you look around. This is what you see:")
     print(room)
 
 def choose_card():
@@ -51,7 +51,7 @@ def choose_card():
         try:
             #only set choice to number if correct number is entered
             
-            choice = int(input("Choose a card (enter number): "))
+            choice = int(input("Choose a card to play (enter number): "))
             if choice not in range(1,len(room)+1):
                 print("Invalid choice, try again.")
                 choice = None
@@ -72,7 +72,7 @@ def card_effect():
             while choice is None:
                 try:
                     #only set choice to answer if correct letter is entered
-                    choice = input("Do you want to use your weapon (y/n): ")
+                    choice = input("Do you want to use your weapon to lower the damage. Your weapon cap will decrease (y/n): ")
                     if choice not in ('y','n'):
                         print("Invalid choice, try again.")
                         choice = None
@@ -86,23 +86,36 @@ def card_effect():
                     blocked_hit = 0
                 health = health - blocked_hit
                 weapon_cap = dict_rank_to_value.get(played_card[0]) - 1
+                if health > 0:
+                    print(f"You strike with your weapon, blocking some of the blow. You take {blocked_hit} damage. Health: {health}")
+                else:
+                    loose()
             #otherwise subtract full hit from health
             else:
                 health = health - dict_rank_to_value.get(played_card[0])
-        #if you dont have a weapon
+                print(f"You fight bare handed and take {dict_rank_to_value.get(played_card[0])} damage. Health: {health}")
+        #if you dont have a weapon or weapon is too weak
         else:
-            health = health - dict_rank_to_value.get(played_card[0])
-        if health > 0:
-            print(f'Your new health: {health}')
-        else:
-            loose()
+            damage = dict_rank_to_value.get(played_card[0])
+            health = health - damage
+            if health > 0:
+                if len(weapon) > 0:
+                    print(f"Your weapon is too weak for this foe — you fight bare handed and take {damage} damage. Health: {health}")
+                else:
+                    print(f"You fight bare handed and take {damage} damage. Health: {health}")
+            else:
+                loose()
     elif played_card[1] == '♥':
         health = health + dict_rank_to_value.get(played_card[0])
         #max health cap at 20
         if health > 20:
             health = 20
-        print(f'Your new health: {health}')
+        print(f"You look around and find a healing elixir. You drink it and feel your wounds close. Health: {health}.")
     elif played_card[1] == '♦':
+        if len(weapon) > 0:
+            print(f"You drop your old weapon and pick up a new one with a strength of {played_card[0]}.")
+        else:
+            print(f"You pick up a weapon with a strength of {played_card[0]} and equip it. You feel stronger.")
         weapon = played_card
         weapon_cap = float('inf')
 
@@ -124,12 +137,28 @@ def refill_room():
         print(f'cards in deck:{len(deck)}')
 
 def win():
-    print ('Congrats, you won!!!')
+    print("""
+    You clear the final room and look around — silence at last.
+    You look around at the scattered cards, the broken weapons, the empty potion vials —
+    remnants of a battle hard fought and barely won.
+
+    With trembling legs you climb back toward the light, a legend forged in the dark.
+
+    *** YOU HAVE CONQUERED THE SCOUNDREL DUNGEON! ***
+    """)
     print(f'remaining cards: {room}')
     exit()
 
 def loose():
-    print('You lost all your health, try again!')
+    print("""
+    Your health has been depleted. Darkness closes in.
+    Your legs give way and you crumble to the dungeon floor.
+    The monsters loom over you as your torch flickers out...
+
+    You have fallen in the depths of the Scoundrel dungeon.
+
+    *** GAME OVER — better luck next time, hero. ***
+    """)
     exit()
 
 def flee_or_play():
@@ -137,7 +166,7 @@ def flee_or_play():
     while choice is None:
         try:
             #only set choice to answer if correct letter is entered
-            choice = input("Do you want to play or flee (p/f): ")
+            choice = input("Do you want to play this room or flee (p/f): ")
             if choice not in ('p','f'):
                 print("Invalid choice, try again.")
                 choice = None
@@ -154,9 +183,25 @@ def flee_or_play():
 #-----------------------GAMING PROCESS--------------------------
 
 #starting the game
-print("starting game")
+print("""
+Welcome, young hero, to the depths of the Scoundrel dungeon!
+You stand at the entrance, torch in hand, heart pounding with courage and dread.
+Monsters lurk in every room, weapons lie scattered in the dark, and potions
+may restore your weary body — but only if you have the strength to reach them.
+
+--- RULES ---
+- Each room contains 4 cards drawn from the dungeon deck.
+- MONSTERS (♣ / ♠): Fight them or flee — but fleeing has a cost.
+- WEAPONS (♦): Equip them to fight monsters with less damage.
+- POTIONS (♥): Restore health, but only up to your starting 20 HP.
+- You can flee a room, but you cannot flee two rooms in a row.
+- The game ends when your health reaches 0... or you clear the entire dungeon.
+
+Good luck. You'll need it.
+""")
+
 health = 20
-print(f'health = {health}')
+print(f'Your health = {health}')
 form_room()
 #playing the game
 #mail loop runs forever 
@@ -171,7 +216,6 @@ while True:
         choose_card()
         card_effect()
         print()
-        print(f'your healt: {health}')
         print(f'cards still in room: {room}')
         print(f'your weapon: {weapon}')
         print(f'your weapon cap:{weapon_cap}')
