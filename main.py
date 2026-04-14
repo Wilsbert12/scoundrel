@@ -1,11 +1,11 @@
 from itertools import product
-from numpy import random
+import random
 
-"""The game is more or less complete. The only thing that should be adjusted: cards get chosen randomly from the deck each room. Therefore
-cards from when you fled a room get shoveled into the deck randomly: 
-1. create shoveled deck
-2. adjust form_room & refill room to use first cards in deck
-3. As of now flee adds cards to room in opposite order. Leave or change?"""
+""" Future developement notes:
+1. As of now flee adds cards to room in opposite order. Leave or change? Might create interesting new rooms.
+2. Add room count instead of "cards in deck"
+3. Add room cleaned message
+"""
 
 
 
@@ -21,6 +21,9 @@ deck = []
 deck.extend(list(product(ranks_black, black_suits)))
 deck.extend(list(product(ranks_red, red_suits)))
 
+#shuffle the deck
+random.shuffle(deck)
+
 #create an empty weapon slot
 weapon = []
 weapon_cap = float('inf')
@@ -34,11 +37,9 @@ dict_rank_to_value = {'2':2, '3':3, '4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'10':10,
 
 def form_room():
     global deck, room
-    #create a random number in length of deck -1 to account for list index starting at 0
     room = []
     for i in range(4):
-        rndm_nr = random.randint(len(deck)-1)
-        room.append(deck.pop(rndm_nr))
+        room.append(deck.pop(0))
     print()
     print("As you enter the dungeon, you look around. This is what you see:")
     print()
@@ -127,10 +128,8 @@ def refill_room():
         room.append(deck.pop(0))
         win()
     else:  
-        #create a random number in length of deck -1 to account for list index starting at 0
         for i in range(3):
-            rndm_nr = random.randint(len(deck)-1)
-            room.append(deck.pop(rndm_nr))
+            room.append(deck.pop(0))
         print()
         print ('your new room is:')
         print(room)
