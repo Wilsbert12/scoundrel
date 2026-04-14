@@ -17,11 +17,6 @@ You can also **flee** a room — the remaining cards get shuffled back into the 
 ## Requirements
 
 - Python 3
-- NumPy
-
-```
-pip install numpy
-```
 
 ## Running the game
 
