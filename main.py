@@ -217,8 +217,11 @@ while True:
         card_effect()
         print()
         print(f'cards still in room: {room}')
-        print(f'your weapon: {weapon}')
-        print(f'your weapon cap:{weapon_cap}')
+        if len(weapon) > 0:
+            print(f'your weapon: {weapon}')
+            print(f'your weapon cap:{weapon_cap}')
+        else:
+            pass
         
         
     refill_room()
