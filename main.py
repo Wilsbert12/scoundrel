@@ -62,8 +62,6 @@ def choose_card():
     print()
     print(f'You played the card {played_card}')
     
-
-""" Weapons needs to be added """
 def card_effect():
     global health, weapon, weapon_cap
     if played_card[1] in black_suits:
