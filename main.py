@@ -41,6 +41,7 @@ def form_room():
         room.append(deck.pop(rndm_nr))
     print()
     print("As you enter the dungeon, you look around. This is what you see:")
+    print()
     print(room)
 
 def choose_card():
@@ -184,12 +185,21 @@ def flee_or_play():
 
 #starting the game
 print("""
+    .------..------..------..------..------..------..------..------..------.
+    |S.--. ||C.--. ||O.--. ||U.--. ||N.--. ||D.--. ||R.--. ||E.--. ||L.--. |
+    | :/\: || :/\: || :/\: || (\/) || :(): || :/\: || :(): || (\/) || :/\: |
+    | :\/: || :\/: || :\/: || :\/: || ()() || (__) || ()() || :\/: || (__) |
+    | '--'S|| '--'C|| '--'O|| '--'U|| '--'N|| '--'D|| '--'R|| '--'E|| '--'L|
+    `------'`------'`------'`------'`------'`------'`------'`------'`------'
+""")
+print("""
+------------------------------------ INTRO ------------------------------------
 Welcome, young hero, to the depths of the Scoundrel dungeon!
 You stand at the entrance, torch in hand, heart pounding with courage and dread.
 Monsters lurk in every room, weapons lie scattered in the dark, and potions
 may restore your weary body — but only if you have the strength to reach them.
 
---- RULES ---
+------------------------------------ RULES ------------------------------------
 - Each room contains 4 cards drawn from the dungeon deck.
 - MONSTERS (♣ / ♠): Fight them or flee — but fleeing has a cost.
 - WEAPONS (♦): Equip them to fight monsters with less damage.
@@ -197,10 +207,11 @@ may restore your weary body — but only if you have the strength to reach them.
 - You can flee a room, but you cannot flee two rooms in a row.
 - The game ends when your health reaches 0... or you clear the entire dungeon.
 
-Good luck. You'll need it.
+Good luck! You'll need it...
 """)
 
 health = 20
+print("---------------------------------- GAME START ----------------------------------")
 print(f'Your health = {health}')
 form_room()
 #playing the game
@@ -217,6 +228,7 @@ while True:
         card_effect()
         print()
         print(f'cards still in room: {room}')
+        print()
         if len(weapon) > 0:
             print(f'your weapon: {weapon}')
             print(f'your weapon cap:{weapon_cap}')
